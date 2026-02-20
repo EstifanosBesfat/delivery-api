@@ -1,0 +1,20 @@
+# 1. Dependencies (We install these via 'npm install')
+node_modules/
+
+# 2. Secrets (NEVER share passwords)
+.env
+
+# 3. Logs
+*.log
+npm-debug.log
+
+# 4. OS Files (Junk files from Windows/Mac)
+.DS_Store
+Thumbs.db
+
+# 5. Editor Settings (VS Code)
+.vscode/
+
+# 6. Docker Volumes (If you mapped data locally)
+pgdata/
+postgres-data/
