@@ -3,7 +3,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const db = require("./config/db");
 const restaurantRoutes = require("./routes/restaurantRoutes"); // <--- Import
-
+const orderRoutes = require('./routes/orderRoutes');
 const app = express();
 app.use(express.json());
 
@@ -32,7 +32,8 @@ io.on("connection", (socket) => {
   });
 });
 // routes
-app.use("/api/restaurants", restaurantRoutes); // <--- Mount
+app.use("/api/restaurants", restaurantRoutes); 
+app.use('/api/orders', orderRoutes);
 
 const startServer = async () => {
   try {
