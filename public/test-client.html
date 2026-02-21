@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delivery Tracker</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box { padding: 20px; border: 1px solid #ccc; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🍕 Delivery Dashboard</h1>
+
+    <div class="box" style="background: #e3f2fd;">
+        <h3>🚗 Driver Simulator</h3>
+        <button onclick="sendLocation()">Move Driver</button>
+        <p>Status: <span id="status">Disconnected</span></p>
+    </div>
+
+    <div class="box" style="background: #e8f5e9;">
+        <h3>📱 Customer View</h3>
+        <ul id="updates"></ul>
+    </div>
+
+    <script>
+        // Connect to your Node.js Server
+        const socket = io("http://localhost:3000");
+
+        socket.on("connect", () => {
+            document.getElementById("status").innerText = "Connected ✅";
+        });
+
+        // 1. SIMULATE DRIVER
+        function sendLocation() {
+            const lat = 9.01 + (Math.random() * 0.01); // Random move near Meskel Sq
+            const long = 38.76 + (Math.random() * 0.01);
+            
+            // Send data to Server
+            socket.emit("driverLocation", { driverId: 101, lat, long });
+        }
+
+        // 2. SIMULATE CUSTOMER (Listening)
+        socket.on("trackDriver", (data) => {
+            const list = document.getElementById("updates");
+            const item = document.createElement("li");
+            item.innerText = `Driver ${data.driverId} moved to: ${data.lat.toFixed(4)}, ${data.long.toFixed(4)}`;
+            list.prepend(item);
+        });
+    </script>
+</body>
+</html>
