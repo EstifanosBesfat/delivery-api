@@ -2,9 +2,11 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const db = require("./config/db");
+const cors = require('cors');
 const restaurantRoutes = require("./routes/restaurantRoutes"); // <--- Import
 const orderRoutes = require('./routes/orderRoutes');
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // create the http server explicitly
@@ -41,7 +43,7 @@ const startServer = async () => {
     await db.query("SELECT NOW()");
     console.log("✅ PostGIS Database Connected");
 
-    server.listen(3000, () => {
+    server.listen(3000, "0.0.0.0", () => {
       console.log("🚀 Server running on port 3000");
     });
   } catch (err) {
